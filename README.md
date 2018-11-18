@@ -8,6 +8,18 @@ MNISTのデータセットのうち100件(クラスごとに10件)を画像化
 
 ---
 
+2.使用する特徴点検出器
+ORB>>SHIFT　らしい？
+(数字のデータなので，エッジの特徴が大きそう)
+
+
+3.マッチング
+bfmatcher(Brute-Force matcher)
+画像のある特徴量記述子と，もう一枚の全特徴中で一番小さい距離を返す
+
+
+---
+
 memo
 
 参考URL:https://qiita.com/best_not_best/items/c9497ffb5240622ede01
