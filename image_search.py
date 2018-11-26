@@ -6,10 +6,10 @@ from matplotlib import pyplot as plt
 
 result={}
 des_temp={}
-#des_data={}
+des_data={}
 
-with open('des_file.pickle',mode='rb+') as file:
-	des_data=pickle.load(file)
+#with open('des_file.pickle',mode='rb+') as file:
+#	des_data=pickle.load(file)
 
 def im_read(img1,img2):
 	query=cv2.imread(img1,0)
@@ -27,18 +27,19 @@ def save_des(imt,des_t):
 def bfmatch_func(img1,img2):
 	query_img,train_img=im_read(img1,img2)
 	orb=cv2.ORB_create()
-	_,des_q=orb.detectAndCompute(query_img,None)
+	kp_q,des_q=orb.detectAndCompute(query_img,None)
 	if(img2 in des_data): #dataset中のdesを保存したい
 		des_t=des_data[img2]
 		print("aleady data")
 	else:
-		_,des_t=orb.detectAndCompute(train_img,None)
+		kp_t,des_t=orb.detectAndCompute(train_img,None)
 		save_des(img2,des_t)
 
 	bf=cv2.BFMatcher(cv2.NORM_HAMMING,crossCheck=True)	
 	matches=bf.match(des_q,des_t)
+	matches = sorted(matches, key = lambda x:x.distance)
 	dis= [m.distance for m in matches]
-	result[img2] = sum(dis)/len(dis)
+	result[img2] = sum(dis)/len(dis) #database画像ごとの距離平均
 	
 
 if __name__=='__main__':
