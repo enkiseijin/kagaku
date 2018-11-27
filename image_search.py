@@ -5,23 +5,12 @@ import os
 from matplotlib import pyplot as plt
 
 result={}
-des_temp={}
-des_data={}
-
-#with open('des_file.pickle',mode='rb+') as file:
-#	des_data=pickle.load(file)
 
 def im_read(img2):
 	#query=cv2.imread(img1,0)
 	comp=cv2.imread('./dataset/'+img2,0)
 	#cv2.imshow('query',query)
 	return comp
-
-def save_des(imt,des_t):
-	des_temp[imt]=des_t
-	with open('des_file.pickle',mode='wb+') as file:
-		pickle.dump(des_temp,file)
-	print("saved!")
 
 
 def bfmatch_func(img1):
@@ -33,12 +22,12 @@ def bfmatch_func(img1):
 	mini=1000
 	files=os.listdir('./dataset')
 
-	for f in files:	
+	for f in files:
 		train_img=im_read(f)
 		kp_t,des_t=orb.detectAndCompute(train_img,None)
 
 
-		bf=cv2.BFMatcher(cv2.NORM_HAMMING,crossCheck=True)	
+		bf=cv2.BFMatcher(cv2.NORM_HAMMING,crossCheck=True)
 		matches=bf.match(des_q,des_t)
 		dis= [m.distance for m in matches]
 		result[f] = sum(dis)/len(dis) #database画像ごとの距離平均
